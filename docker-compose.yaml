@@ -1,0 +1,19 @@
+services:
+  streamgate:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      GIN_MODE: release
+      MED_HLS_URL: http://mediamtx:8888
+    depends_on:
+      - mediamtx
+    restart: unless-stopped
+
+  mediamtx:
+    image: bluenviron/mediamtx:1
+    ports:
+      # RTMP ingest from the broadcaster (OBS, ffmpeg).
+      # HLS (8888) is not published: viewers must go through streamgate.
+      - "1935:1935"
+    restart: unless-stopped
