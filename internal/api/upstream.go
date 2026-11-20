@@ -20,7 +20,7 @@ func upstream(deps dependencies.Service) gin.HandlerFunc {
 			Query:   c.Request.URL.Query(),
 		})
 		if err != nil {
-			deps.Logger().ErrorContext(c.Request.Context(), err.Error())
+			deps.Logger().ErrorContext(c.Request.Context(), "failed request", "error", err)
 			c.AbortWithError(http.StatusBadGateway, err)
 			return
 		}
