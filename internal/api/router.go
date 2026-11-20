@@ -20,8 +20,8 @@ func New(deps dependencies.Service) http.Handler {
 	stream := router.Group("/stream", cors)
 	stream.GET("/:stream/file/:file", upstream(deps))
 
-	router.GET("/", func(c *gin.Context) {
-		c.JSONP(http.StatusOK, "Hello, World!")
+	router.GET("/healthz", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"status": "ok"})
 	})
 
 	return router
