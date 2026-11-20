@@ -26,12 +26,6 @@ func upstream(deps dependencies.Service) gin.HandlerFunc {
 		}
 		defer resp.Body.Close()
 
-		if resp.StatusCode != http.StatusOK {
-			deps.Logger().InfoContext(c.Request.Context(), "upstream request completed", "body", resp.Body)
-			c.DataFromReader(resp.StatusCode, resp.ContentLength, resp.Header.Get("Content-Type"), resp.Body, nil)
-			return
-		}
-
 		c.DataFromReader(resp.StatusCode, resp.ContentLength, resp.Header.Get("Content-Type"), resp.Body, nil)
 	}
 }
