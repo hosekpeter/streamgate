@@ -16,6 +16,14 @@ func (h ContextHandler) Handle(ctx context.Context, r slog.Record) error {
 	return h.Handler.Handle(ctx, r)
 }
 
+func (h ContextHandler) WithGroup(name string) slog.Handler {
+	return ContextHandler{h.Handler.WithGroup(name)}
+}
+
+func (h ContextHandler) WithAttrs(attrs []slog.Attr) slog.Handler {
+	return ContextHandler{Handler: h.Handler.WithAttrs(attrs)}
+}
+
 func WithRequestID(ctx context.Context, id string) context.Context {
 	return context.WithValue(ctx, ctxKey("request_id"), id)
 }

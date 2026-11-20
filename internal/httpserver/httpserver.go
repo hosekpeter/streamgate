@@ -23,7 +23,7 @@ func New(deps dependencies.Service) *Server {
 			ReadHeaderTimeout: time.Second * 10,
 			IdleTimeout:       time.Minute * 2,
 		},
-		logger: deps.Logger(),
+		logger: deps.Logger().With("component", "httpserver"),
 	}
 }
 
