@@ -14,13 +14,12 @@ func RequestLogger(logger *slog.Logger) gin.HandlerFunc {
 		start := time.Now()
 		requestID := c.GetHeader("X-Request-ID")
 
-		if requestID == "" {
+		if requestID == "" || len(requestID) > 64 {
 			requestID = uuid.NewV7().String()
 		}
 
 		ctx := logging.WithRequestID(c.Request.Context(), requestID)
 		c.Request = c.Request.WithContext(ctx)
-		c.Header("X-Request-ID", requestID)
 
 		c.Next()
 
@@ -46,6 +45,5 @@ func RequestLogger(logger *slog.Logger) gin.HandlerFunc {
 				"duration", elapsed.String(),
 			)
 		}()
-
 	}
 }
