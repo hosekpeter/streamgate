@@ -8,6 +8,7 @@ import (
 	"streamgate/internal/config"
 	"streamgate/internal/dependencies"
 	"streamgate/internal/httpserver"
+	"streamgate/internal/logging"
 	"syscall"
 )
 
@@ -21,7 +22,7 @@ func main() {
 	ctx, cancel := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer cancel()
 
-	log := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	log := slog.New(logging.ContextHandler{Handler: slog.NewJSONHandler(os.Stdout, nil)})
 
 	deps := dependencies.New(cfg, log)
 

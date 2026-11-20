@@ -2,6 +2,7 @@ package api
 
 import (
 	"net/http"
+	"streamgate/internal/api/middleware"
 	"streamgate/internal/dependencies"
 
 	"github.com/gin-gonic/gin"
@@ -14,7 +15,7 @@ func New(deps dependencies.Service) http.Handler {
 
 	router := gin.New()
 	router.Use(gin.Recovery())
-	router.Use(gin.Logger())
+	router.Use(middleware.RequestLogger(deps.Logger()))
 
 	stream := router.Group("/stream", cors)
 	stream.GET("/:stream/file/:file", upstream(deps))
